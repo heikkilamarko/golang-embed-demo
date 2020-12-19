@@ -1,0 +1,13 @@
+body {
+  padding: 1rem;
+}
+
+.app-title {
+  text-transform: uppercase;
+  font-weight: lighter;
+}
+
+.app-message {
+  font-size: 4rem;
+  color: var(--bs-primary);
+}
