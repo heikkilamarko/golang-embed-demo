@@ -2,8 +2,9 @@
 
 Requires `go1.16beta1` or higher.
 
+## Run as Docker container
+
 ```bash
-> cd src
-> go run main.go
+> docker-compose up --build
 > open http://localhost:8000
 ```
