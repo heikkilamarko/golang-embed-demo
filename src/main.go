@@ -20,7 +20,7 @@ func main() {
 	http.HandleFunc("/api/message", handleMessage)
 	http.HandleFunc("/", handleIndex)
 
-	log.Fatal(http.ListenAndServe(":8000", nil))
+	log.Fatal(http.ListenAndServe(":80", nil))
 }
 
 func handleMessage(w http.ResponseWriter, r *http.Request) {
