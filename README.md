@@ -1,4 +1,4 @@
-# Golang Embed Demo App
+# Golang Embed Demo
 
 Requires `go1.16beta1` or higher.
 
@@ -6,5 +6,5 @@ Requires `go1.16beta1` or higher.
 
 ```bash
 > docker-compose up --build
-> open http://localhost:8000
+> open http://localhost:8080
 ```
