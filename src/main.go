@@ -38,7 +38,7 @@ func main() {
 	log.Printf("Application running at %s", addr)
 
 	if err := graceful.Graceful(server.ListenAndServe, server.Shutdown); err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	log.Printf("Application shutdown gracefully")
