@@ -1,15 +1,14 @@
 package main
 
 import (
-	"context"
 	"embed"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
-	"os/signal"
 	"time"
 
+	"github.com/ory/graceful"
 	"github.com/pkg/profile"
 )
 
@@ -24,23 +23,6 @@ func main() {
 
 	addr := getAddr()
 
-	var s http.Server
-
-	idleConnsClosed := make(chan struct{})
-
-	go func() {
-		sigint := make(chan os.Signal, 1)
-		signal.Notify(sigint, os.Interrupt)
-
-		<-sigint
-
-		if err := s.Shutdown(context.Background()); err != nil {
-			log.Printf("HTTP server Shutdown: %v", err)
-		}
-
-		close(idleConnsClosed)
-	}()
-
 	m := http.NewServeMux()
 
 	fs := http.FileServer(http.FS(staticFS))
@@ -49,15 +31,17 @@ func main() {
 	m.HandleFunc("/api/message", handleMessage)
 	m.HandleFunc("/", handleIndex)
 
-	s = http.Server{Addr: addr, Handler: m}
+	server := graceful.WithDefaults(&http.Server{
+		Addr:    addr,
+		Handler: m})
 
-	log.Printf("HTTP server running at %s", addr)
+	log.Printf("Application running at %s", addr)
 
-	if err := s.ListenAndServe(); err != http.ErrServerClosed {
-		log.Fatalf("HTTP server ListenAndServe: %v", err)
+	if err := graceful.Graceful(server.ListenAndServe, server.Shutdown); err != nil {
+		panic(err)
 	}
 
-	<-idleConnsClosed
+	log.Printf("Application shutdown gracefully")
 }
 
 func handleMessage(w http.ResponseWriter, r *http.Request) {
