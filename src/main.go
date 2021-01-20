@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/ory/graceful"
-	"github.com/pkg/profile"
+	// "github.com/pkg/profile"
 )
 
 //go:embed static
@@ -19,7 +19,7 @@ var staticFS embed.FS
 var indexHTML []byte
 
 func main() {
-	defer profile.Start(profile.TraceProfile, profile.ProfilePath("."), profile.NoShutdownHook).Stop()
+	// defer profile.Start(profile.TraceProfile, profile.ProfilePath("."), profile.NoShutdownHook).Stop()
 
 	addr := getAddr()
 

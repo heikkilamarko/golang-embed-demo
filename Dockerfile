@@ -1,6 +1,6 @@
 # build stage
 
-FROM golang:1.16beta1-alpine3.12 AS build-env
+FROM golang:1.16-rc-alpine3.13 AS build-env
 
 WORKDIR /app
 
@@ -10,7 +10,7 @@ RUN go build -ldflags="-s -w" -o demoapp main.go
 
 # runtime stage
 
-FROM alpine:3.12
+FROM alpine:3.13
 
 WORKDIR /app
 
