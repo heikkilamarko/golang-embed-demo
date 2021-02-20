@@ -1,19 +1,22 @@
 # build stage
-
-FROM golang:1.16-rc-alpine3.13 AS build-env
-
-WORKDIR /app
+FROM golang:1.16 AS build
 
 COPY ./src/ ./
 
-RUN go build -ldflags="-s -w" -o demoapp main.go
+ENV GOPATH=""
+ENV CGO_ENABLED=0
+ENV GOOS=linux
+ENV GOARCH=amd64
+RUN go build -trimpath -a -ldflags="-w -s" -o api
+
+RUN useradd -u 12345 apiuser
 
 # runtime stage
+FROM scratch
 
-FROM alpine:3.13
+COPY --from=build /go/api /api
+COPY --from=build /etc/passwd /etc/passwd
 
-WORKDIR /app
+USER apiuser
 
-COPY --from=build-env /app/demoapp .
-
-ENTRYPOINT ["./demoapp"]
+ENTRYPOINT ["/api"]
