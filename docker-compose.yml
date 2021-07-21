@@ -6,3 +6,8 @@ services:
     image: golang-embed-demo
     ports:
       - 8080:8080
+    networks:
+      - golang-embed-demo
+
+networks:
+  golang-embed-demo:
