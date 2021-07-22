@@ -3,56 +3,37 @@ package main
 import (
 	"embed"
 	"fmt"
+	"io/fs"
 	"log"
 	"net/http"
 	"os"
 	"time"
-
-	"github.com/ory/graceful"
-	// "github.com/pkg/profile"
 )
 
-//go:embed static
-var staticFS embed.FS
-
-//go:embed index.html
-var indexHTML []byte
+//go:embed ui
+var uiFS embed.FS
 
 func main() {
-	// defer profile.Start(profile.TraceProfile, profile.ProfilePath("."), profile.NoShutdownHook).Stop()
+	http.Handle("/", handleUI())
+	http.HandleFunc("/api/message", handleMessage)
 
 	addr := getAddr()
-
-	m := http.NewServeMux()
-
-	fs := http.FileServer(http.FS(staticFS))
-
-	m.Handle("/static/", fs)
-	m.HandleFunc("/api/message", handleMessage)
-	m.HandleFunc("/", handleIndex)
-
-	server := graceful.WithDefaults(&http.Server{
-		Addr:    addr,
-		Handler: m})
-
 	log.Printf("Application running at %s", addr)
+	log.Fatal(http.ListenAndServe(addr, nil))
+}
 
-	if err := graceful.Graceful(server.ListenAndServe, server.Shutdown); err != nil {
-		log.Fatal(err)
+func handleUI() http.Handler {
+	fsys, err := fs.Sub(uiFS, "ui")
+	if err != nil {
+		panic(err)
 	}
-
-	log.Printf("Application shutdown gracefully")
+	return http.FileServer(http.FS(fsys))
 }
 
 func handleMessage(w http.ResponseWriter, r *http.Request) {
 	time.Sleep(2 * time.Second) // Simulate some work for demo purposes.
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("Hello from API"))
-}
-
-func handleIndex(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusOK)
-	w.Write(indexHTML)
 }
 
 func getAddr() string {
