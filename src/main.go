@@ -42,14 +42,17 @@ func handleAPI(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleSPA(w http.ResponseWriter, r *http.Request) {
-	path := path.Join("ui", r.URL.Path)
-
-	if _, err := uiFS.ReadFile(path); err != nil {
+	if _, err := uiFS.ReadFile(path.Join("ui", r.URL.Path)); err != nil {
 		w.WriteHeader(http.StatusOK)
 		w.Write(indexHTML)
 		return
 	}
 
-	fsys, _ := fs.Sub(uiFS, "ui")
+	fsys, err := fs.Sub(uiFS, "ui")
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
 	http.FileServer(http.FS(fsys)).ServeHTTP(w, r)
 }
