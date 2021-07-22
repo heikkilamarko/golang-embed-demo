@@ -2,44 +2,56 @@ package main
 
 import (
 	"embed"
-	"fmt"
 	"io/fs"
 	"log"
 	"net/http"
-	"os"
+	"path"
 	"time"
+
+	"github.com/gorilla/mux"
 )
+
+//go:embed ui/index.html
+var indexHTML []byte
 
 //go:embed ui
 var uiFS embed.FS
 
 func main() {
-	http.Handle("/", handleUI())
-	http.HandleFunc("/api/message", handleMessage)
+	router := mux.NewRouter()
 
-	addr := getAddr()
-	log.Printf("Application running at %s", addr)
-	log.Fatal(http.ListenAndServe(addr, nil))
-}
+	router.HandleFunc("/api/message", handleAPI).Methods(http.MethodGet)
+	router.PathPrefix("/").HandlerFunc(handleSPA).Methods(http.MethodGet)
 
-func handleUI() http.Handler {
-	fsys, err := fs.Sub(uiFS, "ui")
-	if err != nil {
-		panic(err)
+	server := &http.Server{
+		ReadTimeout:  5 * time.Second,
+		WriteTimeout: 10 * time.Second,
+		IdleTimeout:  120 * time.Second,
+		Addr:         ":8080",
+		Handler:      router,
 	}
-	return http.FileServer(http.FS(fsys))
+
+	log.Printf("application is running at %s", server.Addr)
+
+	log.Fatal(server.ListenAndServe())
 }
 
-func handleMessage(w http.ResponseWriter, r *http.Request) {
-	time.Sleep(2 * time.Second) // Simulate some work for demo purposes.
+func handleAPI(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("Hello from API"))
 }
 
-func getAddr() string {
-	port, ok := os.LookupEnv("PORT")
-	if !ok {
-		port = "8080"
+func handleSPA(w http.ResponseWriter, r *http.Request) {
+	path := path.Join("ui", r.URL.Path)
+
+	if _, err := uiFS.ReadFile(path); err != nil {
+		if _, err := uiFS.ReadDir(path); err != nil {
+			w.WriteHeader(http.StatusOK)
+			w.Write(indexHTML)
+			return
+		}
 	}
-	return fmt.Sprintf(":%s", port)
+
+	fsys, _ := fs.Sub(uiFS, "ui")
+	http.FileServer(http.FS(fsys)).ServeHTTP(w, r)
 }

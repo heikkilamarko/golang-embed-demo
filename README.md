@@ -1,4 +1,4 @@
-# Golang Embed Demo
+# Go Embed Demo
 
 ```bash
 > docker compose up --build -d

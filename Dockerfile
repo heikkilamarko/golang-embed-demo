@@ -1,4 +1,4 @@
-FROM node:16-alpine AS build-frontend
+FROM node:16-alpine AS build-ui
 WORKDIR /app
 COPY ui/package*.json ./
 RUN npm ci
@@ -7,7 +7,7 @@ RUN npm run build
 
 FROM golang:alpine AS build
 COPY ./src/ ./
-COPY --from=build-frontend /app/dist/ ./ui/
+COPY --from=build-ui /app/dist/ ./ui/
 ENV GOPATH=""
 ENV CGO_ENABLED=0
 ENV GOOS=linux
