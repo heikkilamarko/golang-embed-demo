@@ -45,11 +45,9 @@ func handleSPA(w http.ResponseWriter, r *http.Request) {
 	path := path.Join("ui", r.URL.Path)
 
 	if _, err := uiFS.ReadFile(path); err != nil {
-		if _, err := uiFS.ReadDir(path); err != nil {
-			w.WriteHeader(http.StatusOK)
-			w.Write(indexHTML)
-			return
-		}
+		w.WriteHeader(http.StatusOK)
+		w.Write(indexHTML)
+		return
 	}
 
 	fsys, _ := fs.Sub(uiFS, "ui")
