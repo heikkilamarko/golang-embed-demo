@@ -5,7 +5,7 @@ import (
 	"io/fs"
 	"log"
 	"net/http"
-	"path"
+	"strings"
 	"time"
 
 	"github.com/gorilla/mux"
@@ -42,15 +42,13 @@ func handleAPI(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleSPA(w http.ResponseWriter, r *http.Request) {
-	if fi, err := fs.Stat(uiFS, path.Join("ui", r.URL.Path)); err != nil || fi.IsDir() {
+	fsys, _ := fs.Sub(uiFS, "ui")
+
+	name := strings.TrimPrefix(r.URL.Path, "/")
+
+	if file, err := fs.Stat(fsys, name); err != nil || file.IsDir() {
 		w.WriteHeader(http.StatusOK)
 		w.Write(indexHTML)
-		return
-	}
-
-	fsys, err := fs.Sub(uiFS, "ui")
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
