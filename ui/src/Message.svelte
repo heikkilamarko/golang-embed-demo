@@ -17,12 +17,4 @@
   });
 </script>
 
-<div class="message">{message}</div>
-
-<style>
-  .message {
-    padding: 2rem;
-    color: green;
-    font-size: 1.5rem;
-  }
-</style>
+<h1 class="display-6 fw-light text-success">{message}</h1>

@@ -2,26 +2,28 @@ package main
 
 import (
 	"embed"
-	"io/fs"
+	"golang-embed-demo/utils"
 	"log"
 	"net/http"
-	"strings"
 	"time"
 
 	"github.com/gorilla/mux"
 )
 
-//go:embed ui/index.html
-var indexHTML []byte
-
 //go:embed ui
 var uiFS embed.FS
 
 func main() {
+
+	spaHandler, err := utils.NewSPAHandler(uiFS, "ui", "index.html")
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	router := mux.NewRouter()
 
-	router.HandleFunc("/api/message", handleAPI).Methods(http.MethodGet)
-	router.PathPrefix("/").HandlerFunc(handleSPA).Methods(http.MethodGet)
+	router.HandleFunc("/api/message", handleMessage).Methods(http.MethodGet)
+	router.PathPrefix("/").Handler(http.StripPrefix("/", spaHandler)).Methods(http.MethodGet)
 
 	server := &http.Server{
 		ReadTimeout:  5 * time.Second,
@@ -36,21 +38,7 @@ func main() {
 	log.Fatal(server.ListenAndServe())
 }
 
-func handleAPI(w http.ResponseWriter, r *http.Request) {
+func handleMessage(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("Hello from API"))
-}
-
-func handleSPA(w http.ResponseWriter, r *http.Request) {
-	fsys, _ := fs.Sub(uiFS, "ui")
-
-	name := strings.TrimPrefix(r.URL.Path, "/")
-
-	if file, err := fs.Stat(fsys, name); err != nil || file.IsDir() {
-		w.WriteHeader(http.StatusOK)
-		w.Write(indexHTML)
-		return
-	}
-
-	http.FileServer(http.FS(fsys)).ServeHTTP(w, r)
 }
