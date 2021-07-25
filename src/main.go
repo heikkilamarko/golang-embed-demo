@@ -2,20 +2,19 @@ package main
 
 import (
 	"embed"
-	"golang-embed-demo/utils"
 	"log"
 	"net/http"
 	"time"
 
 	"github.com/gorilla/mux"
+	"github.com/heikkilamarko/goutils"
 )
 
 //go:embed ui
 var uiFS embed.FS
 
 func main() {
-
-	spaHandler, err := utils.NewSPAHandler(uiFS, "ui", "index.html")
+	spaHandler, err := goutils.NewSPAHandler(uiFS, "ui", "index.html")
 	if err != nil {
 		log.Fatal(err)
 	}
