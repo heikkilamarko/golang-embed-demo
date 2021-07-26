@@ -18,8 +18,8 @@ github.com/hashicorp/go-cleanhttp v0.5.2/go.mod h1:kO/YDlP8L1346E6Sodw+PrpBSV4/S
 github.com/hashicorp/go-hclog v0.16.1/go.mod h1:whpDNt7SSdeAju8AWKIWsul05p54N/39EeqMAyrmvFQ=
 github.com/hashicorp/go-multierror v1.1.1/go.mod h1:iw975J/qwKPdAO1clOe2L8331t/9/fmwbPZ6JB6eMoM=
 github.com/hashicorp/go-uuid v1.0.2/go.mod h1:6SBZvOh/SIDV7/2o3Jml5SYk/TvGqwFJ/bN7x4byOro=
-github.com/heikkilamarko/goutils v1.0.21 h1:PuLpInICa4/wztruwrwx0iA5lAYUflmV+2tdXX1FDWI=
-github.com/heikkilamarko/goutils v1.0.21/go.mod h1:0KvLB2Xm8oPfPQ6rwj/2SDkpsLaWTvZDhhRU+Sv/X7w=
+github.com/heikkilamarko/goutils v1.0.22 h1:xhXNX4GDhAzsPg/c9WAaDS8br37ttISJf82rmUFFsLk=
+github.com/heikkilamarko/goutils v1.0.22/go.mod h1:0KvLB2Xm8oPfPQ6rwj/2SDkpsLaWTvZDhhRU+Sv/X7w=
 github.com/mattn/go-colorable v0.1.4/go.mod h1:U0ppj6V5qS13XJ6of8GYAs25YV2eR4EVcfRqFIhoBtE=
 github.com/mattn/go-colorable v0.1.8/go.mod h1:u6P/XSegPjTcexA+o6vUJrdnUu04hMope9wVRipJSqc=
 github.com/mattn/go-isatty v0.0.8/go.mod h1:Iq45c/XA43vh69/j3iqttzPXn0bhXyGjM0Hdxcsrc5s=
