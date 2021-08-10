@@ -37,7 +37,7 @@ func main() {
 	log.Fatal(server.ListenAndServe())
 }
 
-func handleMessage(w http.ResponseWriter, r *http.Request) {
+func handleMessage(w http.ResponseWriter, _ *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("Hello from API"))
 }
