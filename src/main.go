@@ -4,6 +4,7 @@ import (
 	"embed"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/gorilla/mux"
@@ -28,7 +29,7 @@ func main() {
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 10 * time.Second,
 		IdleTimeout:  120 * time.Second,
-		Addr:         ":8080",
+		Addr:         ":" + env("PORT", "8080"),
 		Handler:      router,
 	}
 
@@ -38,6 +39,15 @@ func main() {
 }
 
 func handleMessage(w http.ResponseWriter, _ *http.Request) {
+	time.Sleep(2 * time.Second) // simulate a slow response
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("Hello from API"))
+}
+
+func env(key, fallback string) string {
+	value, ok := os.LookupEnv(key)
+	if !ok {
+		return fallback
+	}
+	return value
 }
