@@ -17,8 +17,8 @@ function createStore() {
       } else {
         error.set(await response.text());
       }
-    } catch (error) {
-      error.set(error.message);
+    } catch (err) {
+      error.set(err.message);
     } finally {
       isLoading.set(false);
     }
