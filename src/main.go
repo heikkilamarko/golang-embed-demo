@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/gorilla/mux"
@@ -15,7 +16,7 @@ import (
 var uiFS embed.FS
 
 func main() {
-	spaHandler, err := goutils.NewSPAHandler(uiFS, "ui", "index.html")
+	spaHandler, err := goutils.NewSPAHandler(uiFS, "ui", "index.html", prepareSPAResponse)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -42,6 +43,14 @@ func handleMessage(w http.ResponseWriter, _ *http.Request) {
 	time.Sleep(2 * time.Second) // simulate a slow response
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("Hello from API"))
+}
+
+func prepareSPAResponse(w http.ResponseWriter, r *http.Request, isIndex bool) {
+	if isIndex {
+		w.Header().Set("Cache-Control", "no-store, max-age=0")
+	} else if strings.HasPrefix(r.URL.Path, "assets/") {
+		w.Header().Set("Cache-Control", "max-age=31536000")
+	}
 }
 
 func env(key, fallback string) string {
