@@ -3,7 +3,7 @@
 </script>
 
 <Title>About</Title>
-<p class="text-primary">
+<p class="fw-light">
   Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione vel et sit
   recusandae libero laudantium, laboriosam corrupti harum, alias autem, optio
   enim. Libero architecto id aliquid dolorum sed adipisci nobis ducimus
