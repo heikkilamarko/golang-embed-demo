@@ -4,12 +4,17 @@
 
   const { messages, sendMessage } = store;
 
-  let message;
+  let message = "";
+
+  function handleSubmit() {
+    sendMessage(message);
+    message = "";
+  }
 </script>
 
 <Title>Chat</Title>
 
-<form class="mb-5" on:submit|preventDefault={() => sendMessage(message)}>
+<form class="mb-5" on:submit|preventDefault={handleSubmit}>
   <div class="input-group">
     <input type="text" class="form-control" bind:value={message} />
     <button class="btn btn-primary" type="submit" disabled={!message}
