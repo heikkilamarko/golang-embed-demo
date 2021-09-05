@@ -44,14 +44,7 @@ func (c *client) write() {
 				return
 			}
 
-			w, err := c.conn.NextWriter(websocket.TextMessage)
-			if err != nil {
-				return
-			}
-
-			w.Write(message)
-
-			if err := w.Close(); err != nil {
+			if err := c.writeTextMessage(message); err != nil {
 				return
 			}
 		case <-ticker.C:
@@ -95,6 +88,10 @@ func (c *client) setWriteDeadline() error {
 
 func (c *client) setReadDeadline() error {
 	return c.conn.SetReadDeadline(time.Now().Add(readDuration))
+}
+
+func (c *client) writeTextMessage(message []byte) error {
+	return c.conn.WriteMessage(websocket.TextMessage, message)
 }
 
 func (c *client) writeCloseMessage() error {
