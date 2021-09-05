@@ -1,9 +1,9 @@
 import { writable, get } from "svelte/store";
 
 function createStore() {
-  let isLoading = writable(false);
-  let message = writable();
-  let error = writable();
+  const isLoading = writable(false);
+  const message = writable();
+  const error = writable();
 
   async function loadMessage() {
     if (get(isLoading)) return;

@@ -1,17 +1,20 @@
 <script>
-  import Home from "./Home.svelte";
-  import About from "./About.svelte";
   import page from "page";
+  import chatStore from "../stores/chatStore";
+  import Home from "./Home.svelte";
+  import Chat from "./Chat.svelte";
 
   let currentPage;
 
   page("/", () => (currentPage = Home));
-  page("/about", () => (currentPage = About));
+  page("/chat", () => (currentPage = Chat));
   page("*", "/");
   page();
 
+  chatStore.connect();
+
   $: homeActive = currentPage === Home;
-  $: aboutActive = currentPage === About;
+  $: chatActive = currentPage === Chat;
 </script>
 
 <main class="container text-center">
@@ -20,7 +23,7 @@
       <a class="nav-link" class:active={homeActive} href="/">HOME</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" class:active={aboutActive} href="/about">ABOUT</a>
+      <a class="nav-link" class:active={chatActive} href="/chat">CHAT</a>
     </li>
   </ul>
   <svelte:component this={currentPage} />

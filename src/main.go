@@ -2,6 +2,7 @@ package main
 
 import (
 	"embed"
+	"golang-embed-demo/chat"
 	"log"
 	"net/http"
 	"os"
@@ -21,9 +22,17 @@ func main() {
 		log.Fatal(err)
 	}
 
+	chatHub := chat.NewHub()
+	go chatHub.Run()
+
 	router := mux.NewRouter()
 
+	router.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
+		chat.ServeWs(chatHub, w, r)
+	})
+
 	router.HandleFunc("/api/message", handleMessage).Methods(http.MethodGet)
+
 	router.PathPrefix("/").Handler(http.StripPrefix("/", spaHandler)).Methods(http.MethodGet)
 
 	server := &http.Server{
