@@ -14,7 +14,7 @@
 
 <Title>Chat</Title>
 
-<form class="mb-5" on:submit|preventDefault={handleSubmit}>
+<form class="mt-4 mb-5" on:submit|preventDefault={handleSubmit}>
   <div class="input-group">
     <input type="text" class="form-control" bind:value={message} />
     <button class="btn btn-primary" type="submit" disabled={!message}

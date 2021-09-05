@@ -25,15 +25,18 @@ func main() {
 	chatHub := chat.NewHub()
 	go chatHub.Run()
 
+	chatHandler := chat.NewWSHandler(chatHub)
+
 	router := mux.NewRouter()
 
-	router.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
-		chat.ServeWs(chatHub, w, r)
-	})
+	router.Handle("/ws", chatHandler)
 
-	router.HandleFunc("/api/message", handleMessage).Methods(http.MethodGet)
+	router.HandleFunc("/api/message", handleMessage).
+		Methods(http.MethodGet)
 
-	router.PathPrefix("/").Handler(http.StripPrefix("/", spaHandler)).Methods(http.MethodGet)
+	router.PathPrefix("/").
+		Handler(http.StripPrefix("/", spaHandler)).
+		Methods(http.MethodGet)
 
 	server := &http.Server{
 		ReadTimeout:  5 * time.Second,

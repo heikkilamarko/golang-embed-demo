@@ -1,18 +1,18 @@
 package chat
 
 type Hub struct {
-	clients    map[*Client]bool
+	clients    map[*client]bool
 	broadcast  chan []byte
-	register   chan *Client
-	unregister chan *Client
+	register   chan *client
+	unregister chan *client
 }
 
 func NewHub() *Hub {
 	return &Hub{
-		clients:    make(map[*Client]bool),
+		clients:    make(map[*client]bool),
 		broadcast:  make(chan []byte),
-		register:   make(chan *Client),
-		unregister: make(chan *Client),
+		register:   make(chan *client),
+		unregister: make(chan *client),
 	}
 }
 
@@ -31,8 +31,8 @@ func (h *Hub) Run() {
 				select {
 				case client.send <- message:
 				default:
-					close(client.send)
 					delete(h.clients, client)
+					close(client.send)
 				}
 			}
 		}

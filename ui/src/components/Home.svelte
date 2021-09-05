@@ -1,7 +1,7 @@
 <script>
   import Title from "./Title.svelte";
-  import Message from "./Message.svelte";
+  import ApiMessage from "./ApiMessage.svelte";
 </script>
 
 <Title>Go Embed Demo</Title>
-<Message />
+<ApiMessage />
