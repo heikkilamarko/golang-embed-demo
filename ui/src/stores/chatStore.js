@@ -14,9 +14,9 @@ function createStore() {
   }
 
   function connect() {
-    conn = new WebSocket("ws://" + document.location.host + "/ws");
+    conn = new WebSocket(`ws://${document.location.host}/ws`);
+    conn.onmessage = (e) => addMessage(e.data);
     conn.onclose = () => addMessage("Connection closed.");
-    conn.onmessage = (e) => e.data.split("\n").forEach(addMessage);
   }
 
   return {
