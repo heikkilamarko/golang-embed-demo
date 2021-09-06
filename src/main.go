@@ -29,7 +29,8 @@ func main() {
 
 	router := mux.NewRouter()
 
-	router.Handle("/ws", chatHandler)
+	router.Handle("/ws", chatHandler).
+		Methods(http.MethodGet)
 
 	router.HandleFunc("/api/message", handleMessage).
 		Methods(http.MethodGet)

@@ -8,10 +8,10 @@ import (
 )
 
 const (
-	writeDuration = 10 * time.Second
-	readDuration  = 60 * time.Second
-	readLimit     = 512
-	pingPeriod    = (readDuration * 9) / 10
+	writeTimeout = 10 * time.Second
+	readTimeout  = 60 * time.Second
+	pingInterval = (readTimeout * 9) / 10
+	readLimit    = 1024
 )
 
 type client struct {
@@ -27,7 +27,7 @@ func (c *client) run() {
 }
 
 func (c *client) write() {
-	ticker := time.NewTicker(pingPeriod)
+	ticker := time.NewTicker(pingInterval)
 
 	defer func() {
 		ticker.Stop()
@@ -83,11 +83,11 @@ func (c *client) read() {
 }
 
 func (c *client) setWriteDeadline() error {
-	return c.conn.SetWriteDeadline(time.Now().Add(writeDuration))
+	return c.conn.SetWriteDeadline(time.Now().Add(writeTimeout))
 }
 
 func (c *client) setReadDeadline() error {
-	return c.conn.SetReadDeadline(time.Now().Add(readDuration))
+	return c.conn.SetReadDeadline(time.Now().Add(readTimeout))
 }
 
 func (c *client) writeTextMessage(message []byte) error {
