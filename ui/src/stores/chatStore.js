@@ -6,17 +6,24 @@ function createStore() {
   let conn;
 
   function addMessage(message) {
+    message.ts = new Date(message.ts);
     messages.update((messages) => [...messages, message]);
   }
 
   function sendMessage(message) {
-    conn?.send(message);
+    message.ts = new Date();
+    conn?.send(JSON.stringify(message));
   }
 
   function connect() {
     conn = new WebSocket(`ws://${document.location.host}/ws`);
-    conn.onmessage = (e) => addMessage(e.data);
-    conn.onclose = () => addMessage("Connection closed.");
+    conn.onmessage = (e) => addMessage(JSON.parse(e.data));
+    conn.onclose = () =>
+      addMessage({
+        sender: "Server",
+        message: "Connection closed.",
+        ts: new Date(),
+      });
   }
 
   return {
