@@ -1,7 +1,14 @@
-import { writable } from "svelte/store";
+import { derived, get, writable } from "svelte/store";
 
 function createStore() {
+  const sender = writable("");
+  const message = writable("");
   const messages = writable([]);
+
+  const canSendMessage = derived(
+    [sender, message],
+    ([$sender, $message]) => $sender && $message
+  );
 
   let conn;
 
@@ -10,9 +17,15 @@ function createStore() {
     messages.update((messages) => [...messages, message]);
   }
 
-  function sendMessage(message) {
-    message.ts = new Date();
-    conn?.send(JSON.stringify(message));
+  function sendMessage() {
+    conn?.send(
+      JSON.stringify({
+        sender: get(sender),
+        message: get(message),
+        ts: new Date(),
+      })
+    );
+    message.set("");
   }
 
   function connect() {
@@ -27,8 +40,10 @@ function createStore() {
   }
 
   return {
+    sender,
+    message,
     messages,
-    addMessage,
+    canSendMessage,
     sendMessage,
     connect,
   };

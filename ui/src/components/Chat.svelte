@@ -2,22 +2,12 @@
   import store from "../stores/chatStore";
   import Title from "./Title.svelte";
 
-  const { messages, sendMessage } = store;
-
-  let sender = "";
-  let message = "";
-
-  function handleSubmit() {
-    sendMessage({ sender, message });
-    message = "";
-  }
-
-  $: canSend = sender && message;
+  const { sender, message, messages, canSendMessage, sendMessage } = store;
 </script>
 
 <Title>Chat</Title>
 
-<form class="row g-3 my-2 mb-5" on:submit|preventDefault={handleSubmit}>
+<form class="row g-3 my-2 mb-5" on:submit|preventDefault={sendMessage}>
   <div class="col-sm-4">
     <div class="input-group">
       <span class="input-group-text bg-white text-primary">@</span>
@@ -25,7 +15,7 @@
         type="text"
         class="form-control"
         placeholder="username..."
-        bind:value={sender}
+        bind:value={$sender}
       />
     </div>
   </div>
@@ -35,9 +25,9 @@
         type="text"
         class="form-control"
         placeholder="message..."
-        bind:value={message}
+        bind:value={$message}
       />
-      <button class="btn btn-primary" type="submit" disabled={!canSend}
+      <button class="btn btn-primary" type="submit" disabled={!$canSendMessage}
         >Send</button
       >
     </div>
