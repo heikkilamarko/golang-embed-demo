@@ -49,6 +49,7 @@ func (c *client) write() {
 			}
 		case <-ticker.C:
 			c.setWriteDeadline()
+
 			if err := c.writePingMessage(); err != nil {
 				return
 			}
@@ -63,13 +64,12 @@ func (c *client) read() {
 	}()
 
 	c.conn.SetReadLimit(readLimit)
-
-	c.setReadDeadline()
-
 	c.conn.SetPongHandler(func(string) error {
 		c.setReadDeadline()
 		return nil
 	})
+
+	c.setReadDeadline()
 
 	for {
 		_, message, err := c.conn.ReadMessage()

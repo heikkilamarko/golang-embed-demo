@@ -13,13 +13,7 @@ type WSHandler struct {
 }
 
 func NewWSHandler(hub *Hub) *WSHandler {
-	return &WSHandler{
-		hub,
-		&websocket.Upgrader{
-			ReadBufferSize:  1024,
-			WriteBufferSize: 1024,
-		},
-	}
+	return &WSHandler{hub, &websocket.Upgrader{}}
 }
 
 func (h *WSHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
