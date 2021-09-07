@@ -1,5 +1,5 @@
 <script>
-  import store from "../stores/messageStore";
+  import store from "../stores/apiMessageStore";
 
   const { isLoading, message, error, loadMessage } = store;
 </script>

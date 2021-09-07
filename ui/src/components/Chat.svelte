@@ -1,8 +1,18 @@
 <script>
+  import { tick } from "svelte";
   import store from "../stores/chatStore";
   import Title from "./Title.svelte";
 
   const { sender, message, messages, canSendMessage, sendMessage } = store;
+
+  var messagesEl;
+
+  async function scrollToBottom(trigger) {
+    await tick();
+    messagesEl && (messagesEl.scrollTop = messagesEl.scrollHeight);
+  }
+
+  $: scrollToBottom($messages);
 </script>
 
 <Title>Chat</Title>
@@ -14,7 +24,7 @@
       <input
         type="text"
         class="form-control"
-        placeholder="username..."
+        placeholder="Type your name"
         bind:value={$sender}
       />
     </div>
@@ -24,7 +34,7 @@
       <input
         type="text"
         class="form-control"
-        placeholder="message..."
+        placeholder="Type a new message"
         bind:value={$message}
       />
       <button class="btn btn-primary" type="submit" disabled={!$canSendMessage}
@@ -34,15 +44,17 @@
   </div>
 </form>
 
-{#each $messages as m}
-  <div class="border rounded bg-white py-2 px-3 mb-3 text-start">
-    <div class="sender mb-2">
-      <span class="fw-bold">{m.sender}</span>
-      <span class="text-muted ms-3">{m.ts.toLocaleString()}</span>
+<div class="flex-fill overflow-auto" bind:this={messagesEl}>
+  {#each $messages as m}
+    <div class="border rounded bg-white py-2 px-3 mb-3 text-start">
+      <div class="sender mb-2">
+        <span class="fw-bold">{m.sender}</span>
+        <span class="text-muted ms-3">{m.ts.toLocaleString()}</span>
+      </div>
+      <div>{m.message}</div>
     </div>
-    <div>{m.message}</div>
-  </div>
-{/each}
+  {/each}
+</div>
 
 <style>
   .sender {
