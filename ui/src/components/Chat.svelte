@@ -6,7 +6,7 @@
 
   const { sender, message, messages, canSendMessage, sendMessage } = store;
 
-  var messagesEl;
+  let messagesEl;
 
   async function scrollToBottom() {
     await tick();
