@@ -1,5 +1,6 @@
 <script>
   import { tick } from "svelte";
+  import { fly } from "svelte/transition";
   import store from "../stores/chatStore";
   import Title from "./Title.svelte";
 
@@ -7,12 +8,12 @@
 
   var messagesEl;
 
-  async function scrollToBottom(trigger) {
+  async function scrollToBottom() {
     await tick();
-    messagesEl && (messagesEl.scrollTop = messagesEl.scrollHeight);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
   }
 
-  $: scrollToBottom($messages);
+  $: $messages && scrollToBottom();
 </script>
 
 <Title>Chat</Title>
@@ -45,8 +46,11 @@
 </form>
 
 <div class="flex-fill overflow-auto" bind:this={messagesEl}>
-  {#each $messages as m}
-    <div class="border rounded bg-white py-2 px-3 mb-3 text-start">
+  {#each $messages as m (m.id)}
+    <div
+      class="border rounded bg-white py-2 px-3 mb-3 text-start"
+      in:fly={{ x: 100, duration: 600 }}
+    >
       <div class="sender mb-2">
         <span class="fw-bold">{m.sender}</span>
         <span class="text-muted ms-3">{m.ts.toLocaleString()}</span>

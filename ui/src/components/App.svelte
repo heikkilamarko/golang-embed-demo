@@ -17,7 +17,7 @@
   $: chatActive = currentPage === Chat;
 </script>
 
-<main class="container text-center vh-100 d-flex flex-column">
+<main class="container vh-100 d-flex flex-column">
   <ul class="nav nav-pills my-2">
     <li class="nav-item">
       <a class="nav-link" class:active={homeActive} href="/">HOME</a>

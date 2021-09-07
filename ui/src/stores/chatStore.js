@@ -1,4 +1,5 @@
 import { derived, get, writable } from "svelte/store";
+import { v4 as uuid } from "uuid";
 
 function createStore() {
   const sender = writable("");
@@ -20,6 +21,7 @@ function createStore() {
   function sendMessage() {
     conn?.send(
       JSON.stringify({
+        id: uuid(),
         sender: get(sender),
         message: get(message),
         ts: new Date(),
