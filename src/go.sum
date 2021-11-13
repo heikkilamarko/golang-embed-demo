@@ -2,5 +2,5 @@ github.com/gorilla/mux v1.8.0 h1:i40aqfkR1h2SlN9hojwV5ZA91wcXFOvkdNIeFDP5koI=
 github.com/gorilla/mux v1.8.0/go.mod h1:DVbg23sWSpFRCP0SfiEN6jmj59UnW/n46BH5rLB71So=
 github.com/gorilla/websocket v1.4.2 h1:+/TMaTYc4QFitKJxsQ7Yye35DkWvkdLcvGKqM+x0Ufc=
 github.com/gorilla/websocket v1.4.2/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=
-github.com/heikkilamarko/goutils v1.0.24 h1:ZykuAQAvNKR5T3MD6XI5xVsPSegBeP0g72s/UI34PO4=
-github.com/heikkilamarko/goutils v1.0.24/go.mod h1:IfjcKMhqr1dgcQXvVtofnKZaAFYzFDwkrSfdxvBlxh4=
+github.com/heikkilamarko/goutils v1.0.25 h1:ndW4bdt4WvThymrr3r7mEQ5BYOjOXLOjfo+Y+PL+QV0=
+github.com/heikkilamarko/goutils v1.0.25/go.mod h1:oG1jZkNnZ7+w8mVgWdvaujvHrVms2qj/KLzTXBgkmhs=
