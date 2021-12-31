@@ -1,10 +1,10 @@
 package chat
 
 import (
-	"log"
 	"time"
 
 	"github.com/gorilla/websocket"
+	"github.com/rs/zerolog"
 )
 
 const (
@@ -15,9 +15,10 @@ const (
 )
 
 type client struct {
-	hub  *Hub
-	conn *websocket.Conn
-	send chan []byte
+	hub    *Hub
+	conn   *websocket.Conn
+	send   chan []byte
+	logger *zerolog.Logger
 }
 
 func (c *client) run() {
@@ -74,7 +75,7 @@ func (c *client) read() {
 	for {
 		_, message, err := c.conn.ReadMessage()
 		if err != nil {
-			log.Println(err)
+			c.logger.Info().Msgf("%s", err)
 			break
 		}
 

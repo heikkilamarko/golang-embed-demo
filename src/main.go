@@ -3,7 +3,7 @@ package main
 import (
 	"embed"
 	"golang-embed-demo/chat"
-	"log"
+	"golang-embed-demo/utils"
 	"net/http"
 	"os"
 	"strings"
@@ -12,25 +12,30 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/heikkilamarko/goutils"
+	"github.com/rs/zerolog"
 )
 
 //go:embed ui
 var uiFS embed.FS
 
 func main() {
+	logger := createLogger()
+
+	logFormatter := utils.NewZerologLogFormatter(logger)
+
 	spaHandler, err := goutils.NewSPAHandler(uiFS, "ui", "index.html", prepareSPAResponse)
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal().Err(err).Send()
 	}
 
 	chatHub := chat.NewHub()
 	go chatHub.Run()
 
-	chatHandler := chat.NewWSHandler(chatHub)
+	chatHandler := chat.NewWSHandler(chatHub, logger)
 
 	router := chi.NewRouter()
 
-	router.Use(middleware.Logger)
+	router.Use(middleware.RequestLogger(logFormatter))
 	router.Use(middleware.Recoverer)
 
 	router.Method(http.MethodGet, "/ws", chatHandler)
@@ -45,9 +50,9 @@ func main() {
 		Handler:      router,
 	}
 
-	log.Printf("application is running at %s", server.Addr)
+	logger.Info().Msgf("application is running at %s", server.Addr)
 
-	log.Fatal(server.ListenAndServe())
+	logger.Fatal().Err(server.ListenAndServe()).Send()
 }
 
 func handleMessage(w http.ResponseWriter, _ *http.Request) {
@@ -62,6 +67,18 @@ func prepareSPAResponse(w http.ResponseWriter, r *http.Request, isIndex bool) {
 	} else if strings.HasPrefix(r.URL.Path, "assets/") {
 		w.Header().Set("Cache-Control", "max-age=31536000")
 	}
+}
+
+func createLogger() *zerolog.Logger {
+	zerolog.SetGlobalLevel(zerolog.InfoLevel)
+
+	l := zerolog.
+		New(os.Stderr).
+		With().
+		Timestamp().
+		Logger()
+
+	return &l
 }
 
 func env(key, fallback string) string {
