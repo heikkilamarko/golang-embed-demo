@@ -9,7 +9,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gorilla/mux"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 	"github.com/heikkilamarko/goutils"
 )
 
@@ -27,17 +28,14 @@ func main() {
 
 	chatHandler := chat.NewWSHandler(chatHub)
 
-	router := mux.NewRouter()
+	router := chi.NewRouter()
 
-	router.Handle("/ws", chatHandler).
-		Methods(http.MethodGet)
+	router.Use(middleware.Logger)
+	router.Use(middleware.Recoverer)
 
-	router.HandleFunc("/api/message", handleMessage).
-		Methods(http.MethodGet)
-
-	router.PathPrefix("/").
-		Handler(http.StripPrefix("/", spaHandler)).
-		Methods(http.MethodGet)
+	router.Method(http.MethodGet, "/ws", chatHandler)
+	router.Get("/api/message", handleMessage)
+	router.Method(http.MethodGet, "/*", http.StripPrefix("/", spaHandler))
 
 	server := &http.Server{
 		ReadTimeout:  5 * time.Second,
