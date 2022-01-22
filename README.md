@@ -1,11 +1,18 @@
 # Go Embed Demo
 
+## Run as Docker Container
+
 ```bash
 > docker compose up --build -d
 > open http://localhost:8000
 ```
 
+## Build Mac and Windows Binaries
+
+```bash
+> ./build.sh
+```
+
 ## Tips
 
 - [Embedding resources (version info, icons...) in Windows executables built with Go](https://github.com/tc-hib/go-winres)
-- [Incorrect mime-type for .js files on Windows](https://github.com/golang/go/issues/32350)

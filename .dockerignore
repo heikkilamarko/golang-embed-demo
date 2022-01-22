@@ -1,8 +1,11 @@
+src/ui
 ui/dist
 ui/node_modules
 .dockerignore
 .gitignore
+build.sh
 docker-compose.yml
 Dockerfile
 LICENSE
 README.md
+golang-embed-demo-*
