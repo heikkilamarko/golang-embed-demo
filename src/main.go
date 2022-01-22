@@ -67,6 +67,12 @@ func prepareSPAResponse(w http.ResponseWriter, r *http.Request, isIndex bool) {
 	} else if strings.HasPrefix(r.URL.Path, "assets/") {
 		w.Header().Set("Cache-Control", "max-age=31536000")
 	}
+
+	// This is used to enforce application/javascript MIME on Windows
+	// https://github.com/golang/go/issues/32350
+	if strings.HasSuffix(r.URL.Path, ".js") {
+		w.Header().Set("Content-Type", "application/javascript")
+	}
 }
 
 func createLogger() *zerolog.Logger {
