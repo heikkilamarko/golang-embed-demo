@@ -3,14 +3,17 @@
 ## Run as Docker Container
 
 ```bash
-> docker compose up --build -d
-> open http://localhost:8000
+docker compose up --build -d
+```
+
+```bash
+open http://localhost:8000
 ```
 
 ## Build Mac and Windows Binaries
 
 ```bash
-> ./build.sh
+./build.sh
 ```
 
 ## Tips
