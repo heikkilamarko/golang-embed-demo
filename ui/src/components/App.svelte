@@ -1,6 +1,5 @@
 <script>
   import page from "page";
-  import chatStore from "../stores/chatStore";
   import Home from "./Home.svelte";
   import Chat from "./Chat.svelte";
 
@@ -10,8 +9,6 @@
   page("/chat", () => (currentPage = Chat));
   page("*", "/");
   page();
-
-  chatStore.connect();
 
   $: homeActive = currentPage === Home;
   $: chatActive = currentPage === Chat;

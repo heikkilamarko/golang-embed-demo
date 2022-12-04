@@ -4,7 +4,14 @@
   import store from "../stores/chatStore";
   import Title from "./Title.svelte";
 
-  const { sender, message, messages, canSendMessage, sendMessage } = store;
+  const {
+    sender,
+    message,
+    messages,
+    isConnected,
+    canSendMessage,
+    sendMessage,
+  } = store;
 
   let messagesEl;
 
@@ -17,6 +24,14 @@
 </script>
 
 <Title>Chat</Title>
+
+<div class="text-center">
+  {#if $isConnected}
+    <span class="badge text-bg-success">CONNECTED</span>
+  {:else}
+    <span class="badge text-bg-danger">DISCONNECTED</span>
+  {/if}
+</div>
 
 <form class="row g-3 my-2 mb-5" on:submit|preventDefault={sendMessage}>
   <div class="col-sm-4">
@@ -52,7 +67,9 @@
       in:fly={{ x: 100, duration: 600 }}
     >
       <div class="sender mb-2">
-        <span class="fw-bold">{m.sender}</span>
+        <span class="fw-bold" class:text-primary={m.sender === "INFO"}
+          >{m.sender}</span
+        >
         <span class="text-muted ms-3">{m.ts.toLocaleString()}</span>
       </div>
       <div>{m.message}</div>
