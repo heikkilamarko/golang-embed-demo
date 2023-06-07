@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/gorilla/websocket"
-	"github.com/rs/zerolog"
+	"golang.org/x/exp/slog"
 )
 
 const (
@@ -18,7 +18,7 @@ type client struct {
 	hub    *Hub
 	conn   *websocket.Conn
 	send   chan []byte
-	logger *zerolog.Logger
+	logger *slog.Logger
 }
 
 func (c *client) run() {
@@ -75,7 +75,7 @@ func (c *client) read() {
 	for {
 		_, message, err := c.conn.ReadMessage()
 		if err != nil {
-			c.logger.Info().Msgf("%s", err)
+			c.logger.Error(err.Error())
 			break
 		}
 

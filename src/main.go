@@ -12,7 +12,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/heikkilamarko/goutils"
-	"github.com/rs/zerolog"
+	"golang.org/x/exp/slog"
 )
 
 //go:embed ui
@@ -21,11 +21,12 @@ var uiFS embed.FS
 func main() {
 	logger := createLogger()
 
-	logFormatter := utils.NewZerologLogFormatter(logger)
+	logFormatter := utils.NewLogFormatter(logger)
 
 	spaHandler, err := goutils.NewSPAHandler(uiFS, "ui", "index.html", prepareSPAResponse)
 	if err != nil {
-		logger.Fatal().Err(err).Send()
+		logger.Error(err.Error())
+		os.Exit(1)
 	}
 
 	chatHub := chat.NewHub()
@@ -50,13 +51,15 @@ func main() {
 		Handler:      router,
 	}
 
-	logger.Info().Msgf("application is running at %s", server.Addr)
+	logger.Info("application is running at " + server.Addr)
 
-	logger.Fatal().Err(server.ListenAndServe()).Send()
+	if err := server.ListenAndServe(); err != http.ErrServerClosed {
+		logger.Error(err.Error())
+		os.Exit(1)
+	}
 }
 
 func handleMessage(w http.ResponseWriter, _ *http.Request) {
-	time.Sleep(2 * time.Second) // simulate a slow response
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("Hello from API"))
 }
@@ -67,24 +70,20 @@ func prepareSPAResponse(w http.ResponseWriter, r *http.Request, isIndex bool) {
 	} else if strings.HasPrefix(r.URL.Path, "assets/") {
 		w.Header().Set("Cache-Control", "max-age=31536000")
 	}
-
-	// This is used to enforce application/javascript MIME on Windows
-	// https://github.com/golang/go/issues/32350
-	if strings.HasSuffix(r.URL.Path, ".js") {
-		w.Header().Set("Content-Type", "application/javascript")
-	}
 }
 
-func createLogger() *zerolog.Logger {
-	zerolog.SetGlobalLevel(zerolog.InfoLevel)
+func createLogger() *slog.Logger {
+	opts := &slog.HandlerOptions{
+		Level: slog.LevelInfo,
+	}
 
-	l := zerolog.
-		New(os.Stderr).
-		With().
-		Timestamp().
-		Logger()
+	handler := slog.NewJSONHandler(os.Stderr, opts)
 
-	return &l
+	logger := slog.New(handler)
+
+	slog.SetDefault(logger)
+
+	return logger
 }
 
 func env(key, fallback string) string {
