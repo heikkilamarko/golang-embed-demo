@@ -1,10 +1,10 @@
 package chat
 
 import (
+	"log/slog"
 	"time"
 
 	"github.com/gorilla/websocket"
-	"golang.org/x/exp/slog"
 )
 
 const (

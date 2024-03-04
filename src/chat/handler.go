@@ -1,10 +1,10 @@
 package chat
 
 import (
+	"log/slog"
 	"net/http"
 
 	"github.com/gorilla/websocket"
-	"golang.org/x/exp/slog"
 )
 
 type WSHandler struct {

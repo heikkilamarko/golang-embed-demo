@@ -3,11 +3,11 @@ package utils
 import (
 	"context"
 	"fmt"
+	"log/slog"
 	"net/http"
 	"time"
 
 	"github.com/go-chi/chi/v5/middleware"
-	"golang.org/x/exp/slog"
 )
 
 func NewLogFormatter(l *slog.Logger) middleware.LogFormatter {

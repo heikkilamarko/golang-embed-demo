@@ -4,6 +4,7 @@ import (
 	"embed"
 	"golang-embed-demo/chat"
 	"golang-embed-demo/utils"
+	"log/slog"
 	"net/http"
 	"os"
 	"strings"
@@ -12,7 +13,6 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/heikkilamarko/goutils"
-	"golang.org/x/exp/slog"
 )
 
 //go:embed ui
