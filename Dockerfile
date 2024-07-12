@@ -5,7 +5,7 @@ RUN npm ci
 COPY ui/ .
 RUN npm run build
 
-FROM golang:alpine AS build
+FROM golang:1.23-rc AS build
 COPY ./src/ ./
 COPY --from=build-ui /app/dist/ ./ui/
 ENV GOPATH=""
