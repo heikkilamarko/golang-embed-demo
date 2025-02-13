@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 pushd ui > /dev/null
 npm ci
