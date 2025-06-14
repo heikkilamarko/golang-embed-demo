@@ -7,7 +7,7 @@ npm run build
 popd > /dev/null
 
 rm -rf src/ui
-mv ui/dist src/ui
+mv ui/build src/ui
 
 pushd src > /dev/null
 GOOS=darwin GOARCH=arm64 go build -trimpath -a -ldflags="-w -s" -o ../golang-embed-demo-darwin-arm64
