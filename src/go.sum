@@ -2,5 +2,5 @@ github.com/go-chi/chi/v5 v5.2.1 h1:KOIHODQj58PmL80G2Eak4WdvUzjSJSm0vG72crDCqb8=
 github.com/go-chi/chi/v5 v5.2.1/go.mod h1:L2yAIGWB3H+phAw1NxKwWM+7eUH/lU8pOMm5hHcoops=
 github.com/gorilla/websocket v1.5.3 h1:saDtZ6Pbx/0u+bgYQ3q96pZgCzfhKXGPqt7kZ72aNNg=
 github.com/gorilla/websocket v1.5.3/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=
-github.com/heikkilamarko/goutils v1.0.29 h1:MlyT/wQ1GKJT2DmJU69AX9D5B6FDAR2PbOV2ifr/mWo=
-github.com/heikkilamarko/goutils v1.0.29/go.mod h1:TNuhWHMlaSbCGoBUJACbtWgfeW0SDhokT5dn9MDL1NE=
+github.com/heikkilamarko/goutils v1.0.30 h1:UkP6768Q9KecEwY5ZER8atEmYwYDVuJX1xOPnwk3fKc=
+github.com/heikkilamarko/goutils v1.0.30/go.mod h1:HxBaEznkhw9cWfUP4jGmac6u27j5U21EFapKRvHlApI=

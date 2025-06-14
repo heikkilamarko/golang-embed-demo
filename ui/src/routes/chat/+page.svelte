@@ -33,7 +33,7 @@
 	{/if}
 </div>
 
-<form class="row g-3 my-2 mb-5" onsubmit={handleSubmit}>
+<form class="row g-3 my-2 mb-5" autocomplete="off" onsubmit={handleSubmit}>
 	<div class="col-sm-4">
 		<div class="input-group">
 			<span class="input-group-text bg-white text-primary">@</span>
