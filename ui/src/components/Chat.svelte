@@ -7,7 +7,7 @@
 
 	const { chatStore } = stores;
 
-	let messagesEl = $state();
+	let messagesEl;
 
 	async function scrollToBottom() {
 		await tick();
