@@ -1,25 +1,29 @@
 <script>
-	import { run, preventDefault } from 'svelte/legacy';
 	import { tick } from 'svelte';
 	import { fly } from 'svelte/transition';
 	import { stores } from '$lib/stores/stores.js';
-	import Title from '$lib/components/Title.svelte';
+	import PageTitle from '$lib/components/PageTitle.svelte';
 
 	const { chatStore } = stores;
 
 	let messagesEl;
+
+	$effect(() => {
+		chatStore.messages && scrollToBottom();
+	});
 
 	async function scrollToBottom() {
 		await tick();
 		messagesEl.scrollTop = messagesEl.scrollHeight;
 	}
 
-	run(() => {
-		chatStore.messages && scrollToBottom();
-	});
+	function handleSubmit(event) {
+		event.preventDefault();
+		chatStore.sendMessage();
+	}
 </script>
 
-<Title>Chat</Title>
+<PageTitle>Chat</PageTitle>
 
 <div class="text-center">
 	{#if chatStore.isConnected}
@@ -29,7 +33,7 @@
 	{/if}
 </div>
 
-<form class="row g-3 my-2 mb-5" onsubmit={preventDefault(() => chatStore.sendMessage())}>
+<form class="row g-3 my-2 mb-5" onsubmit={handleSubmit}>
 	<div class="col-sm-4">
 		<div class="input-group">
 			<span class="input-group-text bg-white text-primary">@</span>

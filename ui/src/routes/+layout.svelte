@@ -1,8 +1,11 @@
 <script>
 	import '../app.scss';
 	import { page } from '$app/state';
+	import { createStores } from '$lib/stores/stores.js';
 
 	let { children } = $props();
+
+	createStores();
 </script>
 
 <svelte:head>

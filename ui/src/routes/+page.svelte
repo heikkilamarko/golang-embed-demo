@@ -1,12 +1,12 @@
 <script>
 	import { fly } from 'svelte/transition';
 	import { stores } from '$lib/stores/stores.js';
-	import Title from '$lib/components/Title.svelte';
+	import PageTitle from '$lib/components/PageTitle.svelte';
 
 	const { homeStore } = stores;
 </script>
 
-<Title>Go Embed Demo</Title>
+<PageTitle>Go Embed Demo</PageTitle>
 
 <section class="text-center">
 	<button class="btn btn-primary rounded-pill px-4 my-4" onclick={() => homeStore.loadMessage()}

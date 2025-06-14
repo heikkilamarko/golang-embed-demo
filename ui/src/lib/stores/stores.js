@@ -3,5 +3,7 @@ import { ChatStore } from './ChatStore.svelte.js';
 
 export const stores = {};
 
-stores.homeStore = new HomeStore();
-stores.chatStore = new ChatStore();
+export function createStores() {
+	stores.homeStore ??= new HomeStore();
+	stores.chatStore ??= new ChatStore();
+}
