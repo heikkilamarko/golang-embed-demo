@@ -7,7 +7,7 @@ RUN npm run build
 
 FROM golang AS build
 COPY ./src/ ./
-COPY --from=build-ui /app/dist/ ./ui/
+COPY --from=build-ui /app/build/ ./ui/
 ENV GOPATH=""
 ENV CGO_ENABLED=0
 RUN go build -trimpath -a -ldflags="-w -s" -o golang-embed-demo

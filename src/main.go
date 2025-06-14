@@ -7,7 +7,6 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
-	"strings"
 	"time"
 
 	"github.com/go-chi/chi/v5"
@@ -15,7 +14,7 @@ import (
 	"github.com/heikkilamarko/goutils"
 )
 
-//go:embed ui
+//go:embed ui/*
 var uiFS embed.FS
 
 func main() {
@@ -23,7 +22,7 @@ func main() {
 
 	logFormatter := utils.NewLogFormatter(logger)
 
-	spaHandler, err := goutils.NewSPAHandler(uiFS, "ui", "index.html", prepareSPAResponse)
+	spaHandler, err := goutils.NewSPAHandler(uiFS, "ui", "app.html", prepareSPAResponse)
 	if err != nil {
 		logger.Error(err.Error())
 		os.Exit(1)
@@ -67,8 +66,6 @@ func handleMessage(w http.ResponseWriter, _ *http.Request) {
 func prepareSPAResponse(w http.ResponseWriter, r *http.Request, isIndex bool) {
 	if isIndex {
 		w.Header().Set("Cache-Control", "no-store, max-age=0")
-	} else if strings.HasPrefix(r.URL.Path, "assets/") {
-		w.Header().Set("Cache-Control", "max-age=31536000")
 	}
 }
 

@@ -2,8 +2,8 @@
 	import { run, preventDefault } from 'svelte/legacy';
 	import { tick } from 'svelte';
 	import { fly } from 'svelte/transition';
-	import { stores } from '../stores/stores.js';
-	import Title from './Title.svelte';
+	import { stores } from '$lib/stores/stores.js';
+	import Title from '$lib/components/Title.svelte';
 
 	const { chatStore } = stores;
 
@@ -35,6 +35,7 @@
 			<span class="input-group-text bg-white text-primary">@</span>
 			<input
 				type="text"
+				name="sender"
 				class="form-control"
 				placeholder="Type your name"
 				bind:value={chatStore.sender}
@@ -45,6 +46,7 @@
 		<div class="input-group">
 			<input
 				type="text"
+				name="message"
 				class="form-control"
 				placeholder="Type a new message"
 				bind:value={chatStore.message}

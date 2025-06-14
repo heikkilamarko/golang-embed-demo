@@ -1,23 +1,28 @@
 {
-	"name": "golang-embed-demo",
+	"name": "ui2",
+	"private": true,
+	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
-		"dev": "vite",
+		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
-		"format": "prettier --write ."
-	},
-	"dependencies": {
-		"bootstrap": "5.3.6",
-		"universal-router": "10.0.0",
-		"uuid": "11.1.0"
+		"prepare": "svelte-kit sync || echo ''",
+		"format": "prettier --write .",
+		"lint": "prettier --check ."
 	},
 	"devDependencies": {
+		"@sveltejs/adapter-static": "3.0.8",
+		"@sveltejs/kit": "2.21.5",
 		"@sveltejs/vite-plugin-svelte": "5.1.0",
 		"prettier": "3.5.3",
 		"prettier-plugin-svelte": "3.4.0",
 		"sass": "1.89.2",
-		"svelte": "5.34.1",
+		"svelte": "5.34.2",
 		"vite": "6.3.5"
+	},
+	"dependencies": {
+		"bootstrap": "5.3.6",
+		"uuid": "11.1.0"
 	}
 }
