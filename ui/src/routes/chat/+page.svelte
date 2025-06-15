@@ -29,7 +29,7 @@
 	{#if chatStore.isConnected}
 		<span class="badge text-bg-success">CONNECTED</span>
 	{:else}
-		<span class="badge text-bg-danger">DISCONNECTED</span>
+		<span class="badge text-bg-primary">CONNECTING...</span>
 	{/if}
 </div>
 

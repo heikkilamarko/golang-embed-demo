@@ -8,7 +8,7 @@ export class ChatStore {
 	messages = $state([]);
 	connectionState = $state();
 
-	isConnected = $derived(this.connectionState === 1);
+	isConnected = $derived(this.connectionState === WebSocket.OPEN);
 	canSendMessage = $derived(this.isConnected && !!this.sender && !!this.message);
 
 	constructor() {
@@ -44,7 +44,7 @@ export class ChatStore {
 	}
 
 	connect() {
-		if (this.conn && this.conn.readyState !== 3) return;
+		if (this.conn && this.conn.readyState !== WebSocket.CLOSED) return;
 		this.conn = new WebSocket(`ws://${window.location.host}/ws`);
 		this.conn.onopen = () => this.addInfoMessage('Connection opened.');
 		this.conn.onclose = () => this.addInfoMessage('Connection closed.');
